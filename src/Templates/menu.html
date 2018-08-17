@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<script type="text/javascript">
+
+
+			//right mouse always get 
+			if (document.addEventListener) { // IE >= 9; other browsers
+				document.addEventListener('contextmenu', function(e) {
+					alert("You've tried to open context menu123"); //here you draw your own menu
+					e.preventDefault();
+				}, false);
+			} else { // IE < 9
+				document.attachEvent('oncontextmenu', function() {
+					alert("You've tried to open context menu");
+					window.event.returnValue = false;
+				});
+			}
+
+			// dropbox
+			
+			// jquery
+			<script src="https://code.jquery.com/jquery-3.1.0.js"/>
+			
+			
+		</script>
+		<style type="text/css" media="all">
+			body {
+				margin: 0px;
+			}
+			.menu {
+				margin: 0px;
+				background-color : #EEEEEE;
+			}
+			.menu-line {
+			}
+			.menu-dropdown {
+				font-size: 12px;
+				/*position:relative;*/
+				display: inline-block;
+				
+				padding: 3px 3px 3px 3px;
+				margin: 3px 3px 3px 3px;
+			}
+			.menu-imagebutton {
+				position:relative;
+				display: inline-block;
+				border: 1px black solid;
+				height: 20px;
+				width: 20px;
+			}
+			.menu-dropdown-content {
+				display:none;
+				position: absolute;
+				background-color: #f9f9f9;
+				min-width:160px;
+				box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+				z-index: 1;
+			}
+			/* .menu-dropdown:hover .menu-dropdown-content {
+				display: block;
+			} */
+			.menu-inside-item {
+				
+				background: #EEEEEE;
+			}
+			.menu-inside-menu {
+				
+				background:#EEEEEE;
+				position:relative;
+			}
+			.menu-inside-sidemenu{
+				display:none;
+				position: absolute;
+				top: 0px;
+				right: -100%;
+				background-color: #EEEEEE;
+				min-width:160px;
+				box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+				z-index: 1;
+			}
+			
+
+			/* Menu - Hover Animations */
+			.menu-inside-item:hover {
+				background: #CCCCCC;
+			}
+			.menu-dropdown:hover {
+				background: #CCCCCC;
+			}
+			.menu-inside-menu:hover {
+				background: #CCCCCC;
+			}
+			.menu-inside-sidemenu:hover {
+				background: #CCCCCC;
+			}
+
+			hr {
+				background-color: #EEEEEE;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="menu">
+			<div class="menu-line" onmouseover="All_Menu_In(this)" onmouseout="All_Menu_Out(this)">
+				<div class="menu-dropdown" id="menu-file"
+				onclick="Menu_Click(this)" onmouseover="Menu_Over(this)" name="menu-file">File(F)
+					<div class="menu-dropdown-content">
+						<div class="menu-inside-item">New</div>
+						<hr>
+						<div class="menu-inside-item">Open</div>
+						<div class="menu-inside-item">Exit</div>
+					</div>
+				</div>
+				<div class="menu-dropdown" id="menu-test" 
+				onclick="Menu_Click(this)" onmouseover="Menu_Over(this)" name="menu-test">Test(T)
+					<div class="menu-dropdown-content">
+						<div class="menu-inside-item">New</div>
+						<div class="menu-inside-item">Open</div>
+						<div class="menu-inside-menu" onmouseover="Menu_Over(this)">Options
+							<div class="menu-inside-sidemenu">
+								<div class="menu-inside-item">Test</div>
+								<div class="menu-inside-item">Test</div>
+								<div class="menu-inside-menu">Test
+									<div class="menu-inside-sidemenu">
+										<div class="menu-inside-item">Test</div>
+									</div>
+								</div>
+								<div class="menu-inside-item">Test</div>
+							</div>
+						</div>
+						<div class="menu-inside-item">Exit</div>
+					</div>
+				</div>
+			</div>
+			<div class="menu-line">
+				<div class="menu-imagebutton" name="menu-copy">
+					<img src="image.png"/>
+				</div>
+				<div class="menu-imagebutton" name="menu-paste" id="menu-paste1" >
+					<img src="image.png"/>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var is_Menu_Overed = new Boolean(false);
+			var is_Menu_Clicked = new Boolean(false);
+			var which_Menu_Opened = null;
+			
+			function Menu_Click(e) {
+				if(is_Menu_Clicked == false) {
+					is_Menu_Clicked = true;
+					//which_Menu_Opened = e;
+					Menu_Over(e);
+				}
+			}
+
+			function Menu_Over(e) {
+				if(is_Menu_Clicked == true) {
+					if (which_Menu_Opened != null) {
+						which_Menu_Opened.children[0].style.display = "none";
+					}
+					
+					e.children[0].style.display="block";
+					which_Menu_Opened = e;
+				}
+			}
+
+			function All_Menu_In(e) {
+				is_Menu_Overed = true;
+			}
+			
+			function All_Menu_Out(e) {
+				is_Menu_Overed = false;
+			}
+			
+			document.onclick = function(e) {
+				if(is_Menu_Clicked == true && is_Menu_Overed == false) {
+					is_Menu_Clicked = false;
+					which_Menu_Opened.children[0].style.display = "none";
+					which_Menu_Opened = null;
+				}
+			}
+		
+			document.onkeydown = function(e) {
+				e.preventDefault();
+				if (e.altKey) {
+				
+				}
+			};
+
+			document.onkeyup = function(e) {
+				if(e.altKey==false) { // e.altKey is False When Release
+				
+				}
+			}
+		</script>
+	</body>
+</html>
