@@ -1,0 +1,146 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <style type="text/css" media="all">
+        table {
+            margin : 0;
+            padding : 0;
+            border: 1px solid black;
+        }
+
+        td {
+            width: 700px;
+            margin : 0;
+            padding : 0;
+            border: 1px solid black;
+        }
+
+        tr {
+            margin : 0;
+            padding : 0;
+            border: 1px solid black;
+        }
+
+        p {
+            margin : 0;
+            padding : 0;
+        }
+
+        svg {
+            border : 1px solid black;
+        }
+
+        .draggable {
+            cursor : move;
+        }
+        </style>
+
+        <script type="text/javascript">
+        </script>
+    </head>
+    <body>
+
+        <svg width="1100" height="1000" onload="makeDraggable(evt);">
+            <text x="400" y="400" glyph-orientation-vertical="0">Hello!</text>
+            <text x="300" y="300" transform="rotate(15)">SVG</text>
+            <rect class="draggable" onmouseover="mouseover(this);" onmouseout="mouseout(this);" x="10" y="10" width="200" height="100" style="fill:rgb(50,120,200); stroke-width:1; stroke:rgb(0,0,0)"/>
+        </svg>
+
+        <table>
+            <tr>
+                <td rowspan="2"><p style="writing-mode: vertical-lr;">dssd</p></td>
+                <td id="tt2">2</td>
+            </tr>
+            <tr>
+                <td id="tt">3</td>
+            </tr>
+        </table>
+        <p style="writing-mode: vertical-lr;">dssd</p>
+    </body>
+    <script type="text/javascript">
+
+    var tt = document.getElementById("tt");
+    var tt2 = document.getElementById("tt2");
+
+    var isMouseOn = false;
+
+    function mouseover(evt) {
+        isMouseOn = true;
+        tt.innerHTML = "true";
+    }
+    function mouseout(evt) {
+        isMouseOn = false;
+        tt.innerHTML = "false";
+    }
+
+    
+
+
+    // [Start][Moving SVG by Mouse]
+    var selectedElement = false, offset;
+
+    function makeDraggable(evt) {
+
+      var svg = evt.target;
+
+      svg.addEventListener('mousedown', startDrag);
+      svg.addEventListener('mousemove', drag);
+      svg.addEventListener('mouseup', endDrag);
+      svg.addEventListener('mouseleave', endDrag);
+      //svg.addEventListener('mouseover', RecognizeMouse);
+
+
+      function startDrag(evt) {
+          
+        if (evt.target.classList.contains('draggable')) {
+            selectedElement = evt.target;
+            offset = getMousePosition(evt);
+            offset.x -= parseFloat(selectedElement.getAttributeNS(null, "x"));
+            offset.y -= parseFloat(selectedElement.getAttributeNS(null, "y"));
+        }
+      }
+
+      function drag(evt) {
+        if (selectedElement) {
+            evt.preventDefault();
+            var coord = getMousePosition(evt);
+            selectedElement.setAttributeNS(null, "x", coord.x - offset.x);
+            selectedElement.setAttributeNS(null, "y", coord.y - offset.y);
+        }
+
+        // [Aditional][Mouseon Event]
+        else if(isMouseOn) {
+            //tt2.innerHTML = "a";
+            //evt.preventDefault();
+            var coord = getMousePosition(evt);
+            
+            tt2.innerHTML = Math.abs(offset.x);
+/*
+            if(Math.abs(coord.x - offset.x) < 10 && Math.abs(coord.y - offset.y) < 10) {
+                tt2.innerHTML = "Resize";
+            } 
+            else {
+                tt2.innerHTML = "False";
+            }
+*/
+        }
+      }
+
+      function endDrag(evt) {
+        selectedElement = null;
+      }
+
+        function getMousePosition(evt) {
+            var CTM = svg.getScreenCTM();
+            return {
+            x: (evt.clientX - CTM.e) / CTM.a,
+            y: (evt.clientY - CTM.f) / CTM.d
+            };
+        }
+    }
+    // [END][Moving SVG by Mouse]
+
+
+
+    </script>
+</html>
